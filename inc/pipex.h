@@ -19,8 +19,17 @@
 # include <errno.h>
 # include <sys/wait.h>
 
-void	handle_error(char *msg);
-//void	free_and_exit(data);
+typedef struct s_data
+{
+    char    *PATH;
+    char    *PATH_table;
+    char    **cmds;
+    int     n_cmd;
+} t_data;
+
+void	handle_error(t_data *data, char *msg);
+void	free_and_exit(data);
+void	parsing(t_data *data, char **av, char **env);
 int		verify_files(char **av);
-void handle_child(int infile_fd, int *pipefd, char **env);
+void handle_procesess(t_data data, int infile_fd, int *pipefd);
 #endif

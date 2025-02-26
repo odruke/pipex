@@ -4,21 +4,24 @@ CFLAGS = -Wall -Werror -Wextra -g
 
 CC = cc
 
-FT_PRINTF_LIBDIR = ./ft_printf
+FT_PRINTF_LIBDIR = ./ft_printf/
+
+FT_PRINTF_LIB = $(FT_PRINTF_LIBDIR)libftprintf.a 
 
 SRCDIR = ./src/
 
 INCDIR = ./inc/
 
-files = main\
+FILES  = main\
+		utils\
 
 SRC = $(addprefix $(SRCDIR), $(addsuffix .c, $(FILES)))
 
-OBJ = (SRC:.c=.o)
+OBJ = $(SRC:.c=.o)
 
 INC = $(INCDIR)pipex.h
 
-all: aux_librarie $(NAME)
+all: aux_library $(NAME)
 
 $(NAME): $(OBJ) $(FT_PRINTF_LIB)
 	$(CC) $(OBJ) $(FT_PRINTF_LIB) -o $@
@@ -26,7 +29,7 @@ $(NAME): $(OBJ) $(FT_PRINTF_LIB)
 %.o: %.c
 	$(CC) -I$(INCDIR) $(CFLAGS) -c $< -o $@
 
-aux_libraries:
+aux_library:
 	@make -C $(FT_PRINTF_LIBDIR) all
 
 clean:

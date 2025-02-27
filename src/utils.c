@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:34:21 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/02/26 22:02:43 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:58:22 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,40 @@ void	free_table(char **table)
 	free(table);
 }
 
-void	free_and_exit(data);
+void	free_and_exit(t_data *data)
 {
-	if (data->cmds)
-		free_table(data->cmds);
 	if (data->PATH_table)
 		free_table(data->PATH_table);
-	
+	if (data->cmds)
+		free_table(data->cmds);
+	if (data->current_command)
+		free_table(data->current_command);
+	if (data->command_path)
+		free(data->command_path);
+	if (data)
+		free(data);
+	exit(errno);
 }
 
 
-void	handle_error(char *msg)
+void	handle_error(t_data *data, char *msg)
 {
 	perror(msg);
 	free_and_exit(data);
-	exit(errno);
+}
+static void	complete_path(t_data *data)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	while (data->PATH_table[i])
+	{
+		temp = data->PATH_table[i];
+		data->PATH_table[i] = ft_strjoin(temp, "/");
+		free(temp);
+		i++;
+	}
 }
 
 void	parsing(t_data *data, int ac, char **av, char **env)
@@ -47,14 +66,14 @@ void	parsing(t_data *data, int ac, char **av, char **env)
 	data->cmds = (char **)malloc(sizeof(char *) * (ac - 2));
 	while (i < (ac -3))
 	{
-		data->cmds[i] = ft_strdup(av[i + 2])
+		data->cmds[i] = ft_strdup(av[i + 2]);
 		i++;
 	}
-	data->cmds[i] == NULL;
+	data->cmds[i] = NULL;
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strcmp(env[i], "PATH=" 5))
+		if (!ft_strncmp(env[i], "PATH=", 5))
 		{
 			data->PATH = env[i] + 5;
 			break;
@@ -62,38 +81,40 @@ void	parsing(t_data *data, int ac, char **av, char **env)
 		i++;
 	}
 	if (!data->PATH)
-		error_handle(data, "Error:\nPATH not found in environment\n");
+		handle_error(data, "Error:\nPATH not found in environment\n");
 	data->PATH_table = ft_split(data->PATH, ':');
+	complete_path(data);
 }
 
 void	find_program(t_data *data)
 {
-	char	**current_command;
-	char	*command_path;
 	int		i;
 
 	i = 0;
-	current_command = ft_split(data->cmds[n_cmd], ' ');
-	command_path = NULL;
-	while (data->PATH[i])
+	data->current_command = ft_split(data->cmds[data->n_cmd], ' ');
+	if (!data->current_command)
+		handle_error(data, "Error:\nsplit command failed\n");
+	while (data->PATH_table[i])
 	{
-		command_path = ft_strjoin(data->PATH[i], current_command[0]);
-		if (!access(command_path, X_OK))
-			return (command_path);
-		free(command_path);
+		data->command_path = ft_strjoin(data->PATH_table[i], data->current_command[0]);
+		if (!access(data->command_path, X_OK))
+			break;
+		free(data->command_path);
+		i++;
 	}
+	if (!data->command_path)
+		handle_error(data, "Error:\nCommand directory not found\n");
 }
 
-void handle_procesess(t_data *data, int infile_fd, int *pipefd)
+void handle_procesess(t_data *data, int infile_fd, int *pipefd, char **env)
 {
-	char	*cmd[2] = {"cat", NULL};
-
 	close(pipefd[0]);
 	dup2(infile_fd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(infile_fd);
 	close(pipefd[1]);
-	if (execve("/usr/bin/cat", cmd, env) == -1)
+	find_program(data);
+	if (execve(data->command_path, data->current_command, env) == -1)
 		handle_error(data, "Error:\nexecve failed\n");
-	exit(errno);
+	free_and_exit(data);
 }

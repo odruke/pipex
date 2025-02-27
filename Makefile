@@ -36,7 +36,7 @@ clean:
 	rm -f $(OBJ)
 	@make -C $(FT_PRINTF_LIBDIR) clean
 
-fclean:
+fclean: clean
 	rm -f $(NAME)
 	@make -C $(FT_PRINTF_LIBDIR) fclean
 

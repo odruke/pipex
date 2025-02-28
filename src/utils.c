@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:34:21 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/02/27 16:58:22 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/02/28 10:20:35 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,10 @@ void	find_program(t_data *data)
 void handle_procesess(t_data *data, int infile_fd, int *pipefd, char **env)
 {
 	close(pipefd[0]);
+	dprintf(STDERR_FILENO, "child PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d\n", getpid(), infile_fd, pipefd[0], pipefd[1]);
 	dup2(infile_fd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
+	dprintf(STDERR_FILENO, "child PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d\n", getpid(), infile_fd, pipefd[0], pipefd[1]);
 	close(infile_fd);
 	close(pipefd[1]);
 	find_program(data);

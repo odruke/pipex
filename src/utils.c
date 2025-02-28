@@ -18,7 +18,7 @@ void	free_table(char **table)
 
 	i = 0;
 	while (table[i])
-		free(table[i]);
+		free(table[i++]);
 	free(table);
 }
 
@@ -106,17 +106,17 @@ void	find_program(t_data *data)
 		handle_error(data, "Error:\nCommand directory not found\n");
 }
 
-void handle_procesess(t_data *data, int infile_fd, int *pipefd, char **env)
+void handle_procesess(t_data *data, int prev_pipefd, int *pipefd, char **env)
 {
 	close(pipefd[0]);
-	dprintf(STDERR_FILENO, "child PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d\n", getpid(), infile_fd, pipefd[0], pipefd[1]);
-	dup2(infile_fd, STDIN_FILENO);
+	//dprintf(STDERR_FILENO, "child PID %d: prev_pipefd=%d, pipefd[0]=%d, pipefd[1]=%d\n", getpid(), prev_pipefd, pipefd[0], pipefd[1]);
+	dup2(prev_pipefd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
-	dprintf(STDERR_FILENO, "child PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d\n", getpid(), infile_fd, pipefd[0], pipefd[1]);
-	close(infile_fd);
+	dprintf(STDERR_FILENO, "  child PID %d: STDIN-> prev_pipefd=%d, CLOSE-> pipefd[0]=%d, STDOUT-> pipefd[1]=%d\n", getpid(), prev_pipefd, pipefd[0], pipefd[1]);
+	close(prev_pipefd);
 	close(pipefd[1]);
 	find_program(data);
 	if (execve(data->command_path, data->current_command, env) == -1)
 		handle_error(data, "Error:\nexecve failed\n");
-	free_and_exit(data);
+	return(free_and_exit(data));
 }

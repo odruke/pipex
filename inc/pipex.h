@@ -33,5 +33,5 @@ void	handle_error(t_data *data, char *msg);
 void	free_and_exit(t_data *data);
 void	parsing(t_data *data, int ac, char **av, char **env);
 void    find_program(t_data *data);
-void    handle_procesess(t_data *data, int infile_fd, int *pipefd, char **env);
+void    handle_procesess(t_data *data, int prev_pipefd, int *pipefd, char **env);
 #endif

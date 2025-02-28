@@ -48,12 +48,13 @@ int	main(int ac, char **av, char **env)
 			handle_error(data, "Error:\nCouldn't open/create outfile\n");
 		/*parsing cmds*/
 		parsing(data, ac, av, env);
+		
+
 		/*create a process for each cmd*/
 		while ((ac - 2) > i)
 		{
 			if (pipe(pipe_fd) == -1)
 				handle_error(data, "Error:\nPipe failed\n");
-
 			pid = fork();
 			if (pid == -1)
 				handle_error(data, "Error:\nFork failed\n");
@@ -61,24 +62,28 @@ int	main(int ac, char **av, char **env)
 			if	(!pid)
 				handle_procesess(data, prev_pipefd, pipe_fd, env);
 			data->n_cmd++;
-			dprintf(STDERR_FILENO, "parent PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1]);
-			close(infile_fd);
+			dprintf(STDERR_FILENO, "parent PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d, prev_pipefd=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1], prev_pipefd);
+			close(prev_pipefd);
 			close(pipe_fd[1]);
+
 			prev_pipefd = pipe_fd[0];
-			dprintf(STDERR_FILENO, "parent PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1]);
+
+			dprintf(STDERR_FILENO, "parent PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d, prev_pipefd=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1], prev_pipefd);
 			i++;
 		}
+	//	close(infile_fd);
+	//	close(pipe_fd[0]);
 		/*parent create a process to write file*/
 		pid = fork();
 		if (pid == -1)
 			handle_error(data, "Error:\n2nd fork failed\n");
 		if (pid == 0)
 		{
-			dprintf(STDERR_FILENO, "final child PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1]);
-			dup2(infile_fd, STDIN_FILENO);
+	//		dprintf(STDERR_FILENO, "final child PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d, prev_pipefd=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1], prev_pipefd);
+			dup2(prev_pipefd, STDIN_FILENO);
 			dup2(outfile_fd, STDOUT_FILENO);
-			dprintf(STDERR_FILENO, "final child PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d, outfile_fd=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1], outfile_fd);
-			close(infile_fd);
+			dprintf(STDERR_FILENO, "  final child PID %d: STDIN-> prev_pipefd=%d, STDOUT-> outfile_fd=%d\n", getpid(), prev_pipefd, outfile_fd);
+			close(prev_pipefd);
 			close(outfile_fd);
 			find_program(data);
 			if (execve(data->command_path, data->current_command, env) == -1)
@@ -86,7 +91,10 @@ int	main(int ac, char **av, char **env)
 //			ft_printf("reached end, waiting\n");
 			exit(errno);
 		}
+		close(prev_pipefd);
+		close(outfile_fd);
 		while(wait(NULL) > 0);
+		free_and_exit(data);
 		return (errno);
 	}
 }

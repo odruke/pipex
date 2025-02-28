@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:33:20 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/02/28 13:38:33 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/02/28 22:50:40 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,29 +60,24 @@ int	main(int ac, char **av, char **env)
 				handle_error(data, "Error:\nFork failed\n");
 			/*child handles cmd*/
 			if	(!pid)
-				handle_procesess(data, prev_pipefd, pipe_fd, env);
+				if (handle_procesess(data, prev_pipefd, pipe_fd, env) != 0);
+					return (free_and_exit(data));
 			data->n_cmd++;
-			dprintf(STDERR_FILENO, "parent PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d, prev_pipefd=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1], prev_pipefd);
 			close(prev_pipefd);
 			close(pipe_fd[1]);
 
 			prev_pipefd = pipe_fd[0];
 
-			dprintf(STDERR_FILENO, "parent PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d, prev_pipefd=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1], prev_pipefd);
 			i++;
 		}
-	//	close(infile_fd);
-	//	close(pipe_fd[0]);
 		/*parent create a process to write file*/
 		pid = fork();
 		if (pid == -1)
 			handle_error(data, "Error:\n2nd fork failed\n");
 		if (pid == 0)
 		{
-	//		dprintf(STDERR_FILENO, "final child PID %d: infile_fd=%d, pipefd[0]=%d, pipefd[1]=%d, prev_pipefd=%d\n", getpid(), infile_fd, pipe_fd[0], pipe_fd[1], prev_pipefd);
 			dup2(prev_pipefd, STDIN_FILENO);
 			dup2(outfile_fd, STDOUT_FILENO);
-			dprintf(STDERR_FILENO, "  final child PID %d: STDIN-> prev_pipefd=%d, STDOUT-> outfile_fd=%d\n", getpid(), prev_pipefd, outfile_fd);
 			close(prev_pipefd);
 			close(outfile_fd);
 			find_program(data);
@@ -93,6 +88,7 @@ int	main(int ac, char **av, char **env)
 		}
 		close(prev_pipefd);
 		close(outfile_fd);
+		close(pipe_fd[0]);
 		while(wait(NULL) > 0);
 		free_and_exit(data);
 		return (errno);

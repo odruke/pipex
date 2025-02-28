@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:34:21 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/02/28 10:20:35 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/02/28 22:51:36 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	parsing(t_data *data, int ac, char **av, char **env)
 		i++;
 	}
 	if (!data->PATH)
-		handle_error(data, "Error:\nPATH not found in environment\n");
+		return(handle_error(data, "Error:\nPATH not found in environment\n"));
 	data->PATH_table = ft_split(data->PATH, ':');
 	complete_path(data);
 }
@@ -103,20 +103,18 @@ void	find_program(t_data *data)
 		i++;
 	}
 	if (!data->command_path)
-		handle_error(data, "Error:\nCommand directory not found\n");
+		return (handle_error(data, "Error:\nCommand directory not found\n"));
 }
 
 void handle_procesess(t_data *data, int prev_pipefd, int *pipefd, char **env)
 {
 	close(pipefd[0]);
-	//dprintf(STDERR_FILENO, "child PID %d: prev_pipefd=%d, pipefd[0]=%d, pipefd[1]=%d\n", getpid(), prev_pipefd, pipefd[0], pipefd[1]);
 	dup2(prev_pipefd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
-	dprintf(STDERR_FILENO, "  child PID %d: STDIN-> prev_pipefd=%d, CLOSE-> pipefd[0]=%d, STDOUT-> pipefd[1]=%d\n", getpid(), prev_pipefd, pipefd[0], pipefd[1]);
 	close(prev_pipefd);
 	close(pipefd[1]);
 	find_program(data);
 	if (execve(data->command_path, data->current_command, env) == -1)
-		handle_error(data, "Error:\nexecve failed\n");
-	return(free_and_exit(data));
+		return (handle_error(data, "Error:\nexecve failed\n"));
+	
 }

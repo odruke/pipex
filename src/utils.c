@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:34:21 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/02/28 22:51:36 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/01 10:16:56 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	parsing(t_data *data, int ac, char **av, char **env)
 		i++;
 	}
 	if (!data->PATH)
-		return(handle_error(data, "Error:\nPATH not found in environment\n"));
+		return(handle_error(data, "Error:\nPATH not found in environment"));
 	data->PATH_table = ft_split(data->PATH, ':');
 	complete_path(data);
 }
@@ -93,17 +93,18 @@ void	find_program(t_data *data)
 	i = 0;
 	data->current_command = ft_split(data->cmds[data->n_cmd], ' ');
 	if (!data->current_command)
-		handle_error(data, "Error:\nsplit command failed\n");
+		handle_error(data, "Error:\nsplit command failed");
 	while (data->PATH_table[i])
 	{
 		data->command_path = ft_strjoin(data->PATH_table[i], data->current_command[0]);
 		if (!access(data->command_path, X_OK))
 			break;
 		free(data->command_path);
+		data->command_path = NULL;
 		i++;
 	}
 	if (!data->command_path)
-		return (handle_error(data, "Error:\nCommand directory not found\n"));
+		return (handle_error(data, "Error:\nCommand directory not found"));
 }
 
 void handle_procesess(t_data *data, int prev_pipefd, int *pipefd, char **env)
@@ -115,6 +116,6 @@ void handle_procesess(t_data *data, int prev_pipefd, int *pipefd, char **env)
 	close(pipefd[1]);
 	find_program(data);
 	if (execve(data->command_path, data->current_command, env) == -1)
-		return (handle_error(data, "Error:\nexecve failed\n"));
+		return (handle_error(data, "Error:\nexecve failed"));
 	
 }

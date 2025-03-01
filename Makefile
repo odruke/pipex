@@ -14,6 +14,8 @@ INCDIR = ./inc/
 
 FILES  = main\
 		utils\
+		error_and_exit\
+		handle_procesess\
 
 SRC = $(addprefix $(SRCDIR), $(addsuffix .c, $(FILES)))
 

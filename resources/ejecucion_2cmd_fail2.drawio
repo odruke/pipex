@@ -13,7 +13,7 @@
         <mxCell id="TkE53SrEO5YB9DNX2DDW-8" value="infille&lt;div&gt;fd = 3&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" parent="1" vertex="1">
           <mxGeometry x="10" y="30" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TkE53SrEO5YB9DNX2DDW-9" value="outfile&lt;div&gt;fd = 4&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" parent="1" vertex="1">
+        <mxCell id="TkE53SrEO5YB9DNX2DDW-9" value="data->fds->outfile&lt;div&gt;fd = 4&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" parent="1" vertex="1">
           <mxGeometry x="640" y="950" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="TkE53SrEO5YB9DNX2DDW-17" value="pipe[1]&lt;div&gt;fd = 6&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;direction=south;fillColor=light-dark(#A20025,#FF3333);fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
@@ -87,7 +87,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pv9t1AvhECy30CCjf2E--1" value="prev_pipe&lt;br&gt;&lt;div&gt;fd = 3&lt;br&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;direction=north;fillColor=light-dark(#60A917,#3333FF);fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+        <mxCell id="pv9t1AvhECy30CCjf2E--1" value="data->fds->prev_pipe&lt;br&gt;&lt;div&gt;fd = 3&lt;br&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;direction=north;fillColor=light-dark(#60A917,#3333FF);fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
           <mxGeometry x="447.5" y="200" width="170" height="30" as="geometry" />
         </mxCell>
         <mxCell id="pv9t1AvhECy30CCjf2E--4" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="1">
@@ -114,7 +114,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pv9t1AvhECy30CCjf2E--10" value="prev_pipe&lt;br&gt;&lt;div&gt;fd = 5&lt;br&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;direction=north;fillColor=light-dark(#60A917,#3333FF);fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+        <mxCell id="pv9t1AvhECy30CCjf2E--10" value="data->fds->prev_pipe&lt;br&gt;&lt;div&gt;fd = 5&lt;br&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;direction=north;fillColor=light-dark(#60A917,#3333FF);fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
           <mxGeometry x="860" y="450" width="170" height="30" as="geometry" />
         </mxCell>
         <mxCell id="pv9t1AvhECy30CCjf2E--11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="TkE53SrEO5YB9DNX2DDW-23" target="TkE53SrEO5YB9DNX2DDW-7">
@@ -139,7 +139,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pv9t1AvhECy30CCjf2E--19" value="prev_pipe&lt;br&gt;&lt;div&gt;fd = 3&lt;br&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;direction=north;fillColor=light-dark(#60A917,#3333FF);fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+        <mxCell id="pv9t1AvhECy30CCjf2E--19" value="data->fds->prev_pipe&lt;br&gt;&lt;div&gt;fd = 3&lt;br&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;direction=north;fillColor=light-dark(#60A917,#3333FF);fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
           <mxGeometry x="850" y="626" width="170" height="30" as="geometry" />
         </mxCell>
         <mxCell id="pv9t1AvhECy30CCjf2E--29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="cVPtAOOOHcKWrL9LYY-s-2" target="pv9t1AvhECy30CCjf2E--39">
@@ -168,12 +168,12 @@
             <mxPoint x="530" y="490" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pv9t1AvhECy30CCjf2E--35" value="prev_pipe = pipe[0]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pv9t1AvhECy30CCjf2E--32">
+        <mxCell id="pv9t1AvhECy30CCjf2E--35" value="data->fds->prev_pipe = pipe[0]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pv9t1AvhECy30CCjf2E--32">
           <mxGeometry x="0.1523" y="-1" relative="1" as="geometry">
             <mxPoint x="199" y="81" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pv9t1AvhECy30CCjf2E--55" value="prev_pipe = pipe[0]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pv9t1AvhECy30CCjf2E--32">
+        <mxCell id="pv9t1AvhECy30CCjf2E--55" value="data->fds->prev_pipe = pipe[0]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pv9t1AvhECy30CCjf2E--32">
           <mxGeometry x="0.6387" relative="1" as="geometry">
             <mxPoint x="1" as="offset" />
           </mxGeometry>
@@ -188,7 +188,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="pv9t1AvhECy30CCjf2E--34" value="prev_pipe = infile" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pv9t1AvhECy30CCjf2E--33">
+        <mxCell id="pv9t1AvhECy30CCjf2E--34" value="data->fds->prev_pipe = data->fds->infile" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pv9t1AvhECy30CCjf2E--33">
           <mxGeometry x="-0.1135" y="1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -217,7 +217,7 @@
             <mxPoint x="470" y="620" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pv9t1AvhECy30CCjf2E--53" value="prev_pipe = pipe[0]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pv9t1AvhECy30CCjf2E--52">
+        <mxCell id="pv9t1AvhECy30CCjf2E--53" value="data->fds->prev_pipe = pipe[0]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pv9t1AvhECy30CCjf2E--52">
           <mxGeometry x="0.6468" y="-2" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>

@@ -17,7 +17,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="TkE53SrEO5YB9DNX2DDW-7" value="pipe0 / infile&lt;div&gt;fd = 5&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;direction=north;" parent="1" vertex="1">
+        <mxCell id="TkE53SrEO5YB9DNX2DDW-7" value="pipe0 / data->fds->infile&lt;div&gt;fd = 5&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;direction=north;" parent="1" vertex="1">
           <mxGeometry x="580" y="360" width="170" height="30" as="geometry" />
         </mxCell>
         <mxCell id="TkE53SrEO5YB9DNX2DDW-24" value="STDIN" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="TkE53SrEO5YB9DNX2DDW-8" target="TkE53SrEO5YB9DNX2DDW-19" edge="1">
@@ -33,7 +33,7 @@
         <mxCell id="TkE53SrEO5YB9DNX2DDW-8" value="infille&lt;div&gt;fd = 3&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" parent="1" vertex="1">
           <mxGeometry x="60" y="340" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TkE53SrEO5YB9DNX2DDW-9" value="outfile&lt;div&gt;fd = 4&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" parent="1" vertex="1">
+        <mxCell id="TkE53SrEO5YB9DNX2DDW-9" value="data->fds->outfile&lt;div&gt;fd = 4&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" parent="1" vertex="1">
           <mxGeometry x="630" y="860" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="TkE53SrEO5YB9DNX2DDW-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="TkE53SrEO5YB9DNX2DDW-17" target="TkE53SrEO5YB9DNX2DDW-22" edge="1">

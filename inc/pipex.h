@@ -19,6 +19,14 @@
 # include <errno.h>
 # include <sys/wait.h>
 
+typedef struct s_fds
+{
+    int pipefd[2];
+    int prev_pipe;
+    int infile;
+    int outfile;
+} t_fds;
+
 typedef struct s_data
 {
     char    *PATH;
@@ -26,12 +34,18 @@ typedef struct s_data
     char    **cmds;
     char    **current_command;
     char    *command_path;
+    t_fds   *fds;
     int     n_cmd;
+    int     status;
+    pid_t   pid;
 } t_data;
 
 void	handle_error(t_data *data, char *msg);
 void	free_and_exit(t_data *data);
+int 	cmd_failed(t_data *data);
 void	parsing(t_data *data, int ac, char **av, char **env);
 void    find_program(t_data *data);
-void    handle_procesess(t_data *data, int prev_pipefd, int *pipefd, char **env);
+void    handle_procesess(t_data *data, char **env);
+void    handle_last_process(t_data *data, char **env);
+void	complete_path(t_data *data);
 #endif

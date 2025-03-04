@@ -42,10 +42,11 @@ typedef struct s_data
 
 void	handle_error(t_data *data, char *msg);
 void	free_and_exit(t_data *data);
-int 	cmd_failed(t_data *data);
+void	free_table(char **table);
+int 	cmd_failed(int exit_code, t_data *data);
 void	parsing(t_data *data, int ac, char **av, char **env);
 void    find_program(t_data *data);
-void    handle_procesess(t_data *data, char **env);
+int    handle_procesess(t_data *data, char **env);
 void    handle_last_process(t_data *data, char **env);
 void	complete_path(t_data *data);
 #endif

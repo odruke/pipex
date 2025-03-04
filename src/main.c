@@ -45,16 +45,40 @@ static void	cycling_processes(t_data *data, int ac, char **env)
 	while ((ac - 2) > i)
 	{
 		errno = 0;
+		
 		if (pipe(data->fds->pipefd) == -1)
 			handle_error(data, "Error:\nPipe failed");
 		pid = fork();
+		
 		if (pid == -1)
 			handle_error(data, "Error:\nFork failed");
+		find_program(data);
 		if (!pid)
 			handle_procesess(data, env);
+
 		waitpid(-1, &data->status, 0);
-		if (data->status)
-			cmd_failed(data);
+	//	if (WIFEXITED(data->status) && WEXITSTATUS(data->status) != 0)
+	//		cmd_failed(WEXITSTATUS(data->status), data);
+		if (WIFEXITED(data->status))		
+		{		
+			ft_printf("statud:%i\n", data->status);
+			int exit_status = WEXITSTATUS(data->status);  	
+						
+			if (exit_status != 0)	
+			{
+				ft_printf("%s %s: command not found\ncódigo: %d\n", data->current_command[0], data->current_command[1] ,exit_status);	
+				ft_printf("El comando falló con código de error: %d\n", exit_status);
+			}	
+			else if (WIFSIGNALED(data->status))
+			{
+				ft_printf("Proceso hijo terminó por señal: %d\n", WTERMSIG(data->status));	
+			}
+		}
+		free_table(data->current_command);
+		free(data->command_path);
+		data->current_command = NULL;
+		data->command_path = NULL;
+		data->status = 0;
 		data->n_cmd++;
 		close(data->fds->prev_pipe);
 		close(data->fds->pipefd[1]);
@@ -69,14 +93,26 @@ static void	last_process(t_data *data, char **env)
 	data->pid = fork();
 	if (data->pid == -1)
 		handle_error(data, "Error:\n2nd fork failed");
+	find_program(data);
 	if (data->pid == 0)
 		handle_last_process(data, env);
 	close(data->fds->prev_pipe);
 	close(data->fds->outfile);
 	close(data->fds->pipefd[0]);
 	waitpid(-1, &data->status, 0);
-	if (WIFEXITED(data->status))
-		cmd_failed(data);
+	//if (WIFEXITED(data->status) && WEXITSTATUS(data->status) != 0)
+    //	cmd_failed(WEXITSTATUS(data->status), data);
+		if (WIFEXITED(data->status))
+		{	
+			int exit_status = WEXITSTATUS(data->status);	
+			if (exit_status != 0)
+			{
+				perror(data->current_command[0]);
+				perror(data->current_command[1]);
+				perror(": command not found");
+			}
+				//ft_printf("%s %s: command not found\ncódigo: %d\n", data->current_command[0], data->current_command[1] ,exit_status);
+		}
 	free_and_exit(data);
 }
 

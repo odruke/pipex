@@ -1,6 +1,6 @@
 #include "pipex.h"
 
-static void	free_table(char **table)
+void	free_table(char **table)
 {
 	int	i;
 
@@ -27,12 +27,12 @@ void	free_and_exit(t_data *data)
 	exit(errno);
 }
 
-int	cmd_failed(t_data *data)
+int	cmd_failed(int exit_code, t_data *data)
 {
 	(void)data;
-	ft_printf("cmd n:%i ", (data->n_cmd + 1));
+	ft_printf("cmd n:%i had error ->%i<-\n", (data->n_cmd + 1), exit_code);
 	perror("Error:\ncmd failed");
-	return (errno);
+	return (exit_code);
 }
 
 void	handle_error(t_data *data, char *msg)

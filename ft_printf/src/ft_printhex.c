@@ -34,47 +34,47 @@ static int	hex_precision(t_flags *flags)
 	len = 0;
 	while (flags->precision > 0)
 	{
-		ft_printchar('0');
+		ft_printchar(flags->fd, '0');
 		flags->precision--;
 		len++;
 	}
 	return (len);
 }
 
-static void	ft_puthex(unsigned int n, const char format)
+static void	ft_puthex(t_flags *flags, unsigned int n, const char format)
 {
 	if (n == 0)
 	{
-		ft_printchar('0');
+		ft_printchar(flags->fd, '0');
 		return ;
 	}
 	if (n >= 16)
 	{
-		ft_puthex(n / 16, format);
-		ft_puthex(n % 16, format);
+		ft_puthex(flags, n / 16, format);
+		ft_puthex(flags, n % 16, format);
 	}
 	else
 	{
 		if (n < 10)
-			ft_printchar(n + '0');
+			ft_printchar(flags->fd, n + '0');
 		else
 		{
 			if (format == 'x')
-				ft_printchar(n - 10 + 'a');
+				ft_printchar(flags->fd, n - 10 + 'a');
 			if (format == 'X')
-				ft_printchar(n - 10 + 'A');
+				ft_printchar(flags->fd, n - 10 + 'A');
 		}
 	}
 }
 
-static int	ft_prefix(unsigned int n, const char format)
+static int	ft_prefix(int fd, unsigned int n, const char format)
 {
 	if (n > 0)
 	{
 		if (format == 'x')
-			ft_putstr("0x");
+			ft_putstr(fd, "0x");
 		if (format == 'X')
-			ft_putstr("0X");
+			ft_putstr(fd, "0X");
 		return (2);
 	}
 	else
@@ -91,18 +91,18 @@ int	ft_printhex(unsigned int n, const char format, t_flags flags)
 	if (flags.align)
 	{
 		if (flags.hex_prefix)
-			len += ft_prefix(n, format);
+			len += ft_prefix(flags.fd, n, format);
 		len += hex_precision(&flags);
-		ft_puthex(n, format);
+		ft_puthex(&flags, n, format);
 		len += padding(&flags, len);
 	}
 	else
 	{
 		len += padding(&flags, len);
 		if (flags.hex_prefix)
-			len += ft_prefix(n, format);
+			len += ft_prefix(flags.fd, n, format);
 		len += hex_precision(&flags);
-		ft_puthex(n, format);
+		ft_puthex(&flags, n, format);
 	}
 	return (len);
 }

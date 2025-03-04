@@ -62,13 +62,13 @@ int	ft_printunsigned(unsigned int n, t_flags flags)
 	}
 	if (flags.align)
 	{
-		ft_putstr(num);
+		ft_putstr(flags.fd, num);
 		len += padding(&flags, num_len(n));
 	}
 	else
 	{
 		len += padding(&flags, num_len(n));
-		ft_putstr(num);
+		ft_putstr(flags.fd, num);
 	}
 	free(num);
 	return (len);

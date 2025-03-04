@@ -51,20 +51,20 @@ static int	check_plh(const char *c)
 	return (0);
 }
 
-static int	ft_process(va_list args, const char *str, int *index)
+static int	ft_process(va_list args, const char *str, int *index, int fd)
 {
 	t_flags	flags;
 	int		len;
 
 	len = 0;
-	flag_init(&flags);
+	flag_init(&flags, fd);
 	(*index) += 1;
 	ft_flags(&flags, str, index);
 	len += ft_convert(args, str[(*index)], flags);
 	return (len);
 }
 
-int	ft_printf(const char *str, ...)
+int	ft_printf_fd(int fd, const char *str, ...)
 {
 	va_list	args;
 	t_flags	flags;
@@ -74,17 +74,17 @@ int	ft_printf(const char *str, ...)
 	index = -1;
 	len = 0;
 	va_start(args, str);
-	flag_init(&flags);
+	flag_init(&flags, fd);
 	if (!str)
 		return (0);
 	while (str[++index])
 	{
 		if (!check_plh(&str[index]))
-			len += ft_printchar(str[index]);
+			len += ft_printchar( flags.fd, str[index]);
 		else if (check_plh(&str[index]) == 1)
 			len += ft_convert(args, str[index++ + 1], flags);
 		else if (check_plh(&str[index]) == 2)
-			len += ft_process(args, str, &index);
+			len += ft_process(args, str, &index, fd);
 	}
 	va_end(args);
 	return (len);

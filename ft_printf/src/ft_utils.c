@@ -12,14 +12,14 @@
 
 #include "ft_printf.h"
 
-int	ft_putstr(char *str)
+int	ft_putstr(int fd, char *str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 	{
-		write (1, &str[i], 1);
+		write (fd, &str[i], 1);
 		i++;
 	}
 	return (i);
@@ -36,7 +36,7 @@ int	padding(t_flags *flags, int input_len)
 		pad = '0';
 	while (flags->width > input_len)
 	{
-		len += ft_printchar(pad);
+		len += ft_printchar(flags->fd, pad);
 		flags->width--;
 	}
 	return (len);
@@ -55,7 +55,7 @@ int	padding_nbr(t_flags *flags, int input_len)
 		flags->width -= 1;
 	while (flags->width >= 0 && flags->width > (int)input_len)
 	{
-		len += ft_printchar(pad);
+		len += ft_printchar(flags->fd, pad);
 		flags->width--;
 	}
 	return (len);

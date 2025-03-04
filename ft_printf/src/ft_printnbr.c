@@ -17,14 +17,14 @@ static int	ft_sign(int n, t_flags *flags)
 	if (n >= 0 && (flags->force_sign || flags->space_sign))
 	{
 		if (flags->force_sign)
-			ft_printchar('+');
+			ft_printchar(flags->fd, '+');
 		else if (flags->space_sign)
-			ft_printchar(' ');
+			ft_printchar(flags->fd, ' ');
 		return (1);
 	}
 	else if (n < 0)
 	{
-		ft_printchar('-');
+		ft_printchar(flags->fd, '-');
 		return (1);
 	}
 	return (0);
@@ -41,12 +41,12 @@ static void	process_align(char *nbr, int n, int *len, t_flags *flags)
 		*len += padding_nbr(flags, ft_strlen(nbr));
 		if (!flags->zero_pad || flags->precision >= 0)
 			*len += ft_sign(n, flags);
-		*len += ft_putstr(nbr);
+		*len += ft_putstr(flags->fd, nbr);
 	}
 	else
 	{
 		*len += ft_sign(n, flags);
-		*len += ft_putstr(nbr);
+		*len += ft_putstr(flags->fd, nbr);
 		*len += padding_nbr(flags, ft_strlen(nbr));
 	}
 }

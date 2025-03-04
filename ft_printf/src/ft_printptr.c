@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:06:13 by odruke-s          #+#    #+#             */
-/*   Updated: 2024/10/24 12:47:50 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:15:16 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,24 @@ static int	ptr_len(unsigned long long n)
 	return (len);
 }
 
-static void	ft_putptr(unsigned long long n)
+static void	ft_putptr(int fd, unsigned long long n)
 {
 	if (n == 0)
 	{
-		ft_printchar('0');
+		ft_printchar(fd, '0');
 		return ;
 	}
 	if (n >= 16)
 	{
-		ft_putptr(n / 16);
-		ft_putptr(n % 16);
+		ft_putptr(fd, n / 16);
+		ft_putptr(fd, n % 16);
 	}
 	else
 	{
 		if (n < 10)
-			ft_printchar(n + '0');
+			ft_printchar(fd, n + '0');
 		else
-			ft_printchar(n - 10 + 'a');
+			ft_printchar(fd, n - 10 + 'a');
 	}
 }
 
@@ -55,21 +55,21 @@ int	ft_printptr(unsigned long long ptr, t_flags flags)
 	flags.zero_pad = 0;
 	if (!ptr)
 	{
-		len = ft_putstr("(nil)");
+		len = ft_putstr(flags.fd, "(nil)");
 		return (len);
 	}
 	len = ptr_len(ptr);
 	if (flags.align)
 	{
-		len += ft_putstr("0x");
-		ft_putptr(ptr);
+		len += ft_putstr(flags.fd, "0x");
+		ft_putptr(flags.fd, ptr);
 		len += padding(&flags, ptr_len(ptr) + 2);
 	}
 	else
 	{
 		len += padding(&flags, ptr_len(ptr) + 2);
-		len += ft_putstr("0x");
-		ft_putptr(ptr);
+		len += ft_putstr(flags.fd, "0x");
+		ft_putptr(flags.fd, ptr);
 	}
 	return (len);
 }

@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:30:59 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/02/26 17:56:51 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:21:24 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ typedef struct s_data
     pid_t   pid;
 } t_data;
 
-void	handle_error(t_data *data, char *msg);
-void	free_and_exit(t_data *data);
+int 	handle_error(t_data *data, char *msg, int terminate);
+void	    free_data(t_data *data);
 void	free_table(char **table);
-int 	cmd_failed(int exit_code, t_data *data);
+int 	cmd_failed(t_data *data);
 void	parsing(t_data *data, int ac, char **av, char **env);
 void    find_program(t_data *data);
-int    handle_procesess(t_data *data, char **env);
-void    handle_last_process(t_data *data, char **env);
+int 	handle_procesess(t_data *data, char **env);
+int     handle_last_process(t_data *data, char **env);
 void	complete_path(t_data *data);
 #endif

@@ -10,7 +10,7 @@ void	free_table(char **table)
 	free(table);
 }
 
-void	free_and_exit(t_data *data)
+void	free_data(t_data *data)
 {
 	if (data->PATH_table)
 		free_table(data->PATH_table);
@@ -24,19 +24,22 @@ void	free_and_exit(t_data *data)
 		free(data->fds);
 	if (data)
 		free(data);
-	exit(errno);
 }
 
-int	cmd_failed(int exit_code, t_data *data)
+int	cmd_failed(t_data *data)
 {
-	(void)data;
-	ft_printf("cmd n:%i had error ->%i<-\n", (data->n_cmd + 1), exit_code);
-	perror("Error:\ncmd failed");
-	return (exit_code);
+	ft_printf_fd(2, "%s %s: command not found\n", data->current_command[0], data->current_command[1]);
+	return (127);//127 provoca doble print??
 }
 
-void	handle_error(t_data *data, char *msg)
+int	handle_error(t_data *data, char *msg, int terminate)
 {
-	perror(msg);
-	free_and_exit(data);
+	ft_printf_fd(2, "bash: %s: %s\n", msg, strerror(errno));
+	if (terminate)
+	{
+		free_data(data);
+		exit(errno);
+	}
+	else
+		return (errno);
 }

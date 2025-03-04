@@ -50,7 +50,7 @@ void	parsing(t_data *data, int ac, char **av, char **env)
 		i++;
 	}
 	if (!data->PATH)
-		return(handle_error(data, "Error:\nPATH not found in environment"));
+		handle_error(data, "Error:\nPATH not found in environment", 1);
 	data->PATH_table = ft_split(data->PATH, ':');
 	complete_path(data);
 }
@@ -62,7 +62,7 @@ void	find_program(t_data *data)
 	i = 0;
 	data->current_command = ft_split(data->cmds[data->n_cmd], ' ');
 	if (!data->current_command)
-		handle_error(data, "Error:\nsplit command failed");
+		handle_error(data, "Error:\nsplit command failed", 1);
 	while (data->PATH_table[i])
 	{
 		data->command_path = ft_strjoin(data->PATH_table[i], data->current_command[0]);
@@ -73,5 +73,6 @@ void	find_program(t_data *data)
 		i++;
 	}
 	if (!data->command_path)
-		handle_error(data, "Error:\nCommand directory not found");
+		handle_error(data, data->current_command[0], 0);
+
 }

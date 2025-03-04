@@ -12,9 +12,9 @@
 
 #include "ft_printf.h"
 
-int	ft_printchar(const char c)
+int	ft_printchar(int fd, const char c)
 {
-	write(1, &c, 1);
+	write(fd, &c, 1);
 	return (1);
 }
 
@@ -27,18 +27,18 @@ int	ft_printchar_flag(const char c, t_flags flags)
 	{
 		if (flags.align)
 		{
-			len += ft_printchar(c);
+			len += ft_printchar(flags.fd, c);
 			while (0 < --flags.width)
-				len += ft_printchar(' ');
+				len += ft_printchar(flags.fd, ' ');
 		}
 		else
 		{
 			while (0 < --flags.width)
-				len += ft_printchar(' ');
-			len += ft_printchar(c);
+				len += ft_printchar(flags.fd, ' ');
+			len += ft_printchar(flags.fd, c);
 		}
 	}
 	else
-		len += ft_printchar(c);
+		len += ft_printchar(flags.fd, c);
 	return (len);
 }

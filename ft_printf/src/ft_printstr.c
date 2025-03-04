@@ -25,7 +25,7 @@ static void	ft_process_align(char *str, int *len, t_flags *flags)
 	if (flags->align)
 	{
 		while (flags->precision > i && str[i])
-			*len += ft_printchar(str[i++]);
+			*len += ft_printchar(flags->fd, str[i++]);
 		*len += padding(flags, wordlen);
 	}
 	else
@@ -33,7 +33,7 @@ static void	ft_process_align(char *str, int *len, t_flags *flags)
 		*len += wordlen;
 		*len += padding(flags, wordlen);
 		while (flags->precision > i && str[i])
-			ft_printchar(str[i++]);
+			ft_printchar(flags->fd, str[i++]);
 	}
 }
 

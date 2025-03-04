@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void	flag_init(t_flags *flags)
+void	flag_init(t_flags *flags, int fd)
 {
 	flags->align = 0;
 	flags->zero_pad = 0;
@@ -21,6 +21,7 @@ void	flag_init(t_flags *flags)
 	flags->hex_prefix = 0;
 	flags->width = 0;
 	flags->precision = -1;
+	flags->fd = fd;
 }
 
 void	ft_precision_flags(t_flags *flags, const char *str, int *index)

@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_procesess.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/05 11:10:49 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/03/05 11:10:51 by odruke-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 int	handle_procesess(t_data *data, char **env)
 {
 	errno = 0;
-	if(data->fds->prev_pipe < 1 || !data->command_path)
+	if (data->fds->prev_pipe < 1 || !data->command_path)
 	{
 		free_data(data);
 		exit(errno);
@@ -20,10 +32,10 @@ int	handle_procesess(t_data *data, char **env)
 	exit(errno);
 }
 
-int handle_last_process(t_data *data, char **env)
+int	handle_last_process(t_data *data, char **env)
 {
 	errno = 0;
-	if(data->fds->prev_pipe < 1 || !data->command_path)
+	if (data->fds->prev_pipe < 1 || !data->command_path)
 	{
 		free_data(data);
 		exit(errno);
@@ -35,7 +47,6 @@ int handle_last_process(t_data *data, char **env)
 	close(data->fds->prev_pipe);
 	close(data->fds->outfile);
 	execve(data->command_path, data->current_command, env);
-//	cmd_failed(data);
 	free_data(data);
 	exit(errno);
 }

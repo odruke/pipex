@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 12:21:40 by odruke-s          #+#    #+#             */
-/*   Updated: 2024/10/24 19:00:46 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:35:58 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	ft_printf_fd(int fd, const char *str, ...)
 	while (str[++index])
 	{
 		if (!check_plh(&str[index]))
-			len += ft_printchar( flags.fd, str[index]);
+			len += ft_printchar(flags.fd, str[index]);
 		else if (check_plh(&str[index]) == 1)
 			len += ft_convert(args, str[index++ + 1], flags);
 		else if (check_plh(&str[index]) == 2)

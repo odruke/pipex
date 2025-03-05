@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:33:20 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/04 11:18:00 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/05 11:25:44 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	init_data(t_data *data)
 {
-	data->PATH = NULL;
-	data->PATH_table = NULL;
+	data->path = NULL;
+	data->path_table = NULL;
 	data->cmds = NULL;
 	data->current_command = NULL;
 	data->command_path = NULL;
@@ -53,20 +53,10 @@ static void	cycling_processes(t_data *data, int ac, char **env)
 		pid = fork();
 		if (pid == -1)
 			handle_error(data, "Error:\nFork failed", 1);
-
 		if (!pid)
 			handle_procesess(data, env);
 		waitpid(-1, &data->status, 0);
-//		int exitcode;
-	//	if (WIFEXITED(data->status))		
-	//		if((exitcode = WEXITSTATUS(data->status)))
-//				printf("status= %i", exitcode);
-				//cmd_failed(data);
-		free_table(data->current_command);
-		free(data->command_path);
-		data->current_command = NULL;
-		data->command_path = NULL;
-		data->status = 0;
+		reset_current_command(data);
 		data->n_cmd++;
 		close(data->fds->prev_pipe);
 		close(data->fds->pipefd[1]);
@@ -78,21 +68,16 @@ static void	cycling_processes(t_data *data, int ac, char **env)
 static void	last_process(t_data *data, char **env)
 {
 	errno = 0;
-	//printf("\n\ndata->status= %i\n", data->status);
 	find_program(data);
 	data->pid = fork();
 	if (data->pid == -1)
 		handle_error(data, "Error:\n2nd fork failed", 1);
-	
 	if (data->pid == 0)
 		handle_last_process(data, env);
 	close(data->fds->prev_pipe);
 	close(data->fds->outfile);
 	close(data->fds->pipefd[0]);
 	waitpid(-1, &data->status, 0);
-//	if (WIFEXITED(data->status))			
-	//	if(WEXITSTATUS(data->status))
-		//	cmd_failed(data);
 	free_data(data);
 }
 

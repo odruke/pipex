@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error_and_exit.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/05 11:09:21 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/03/05 11:09:32 by odruke-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 void	free_table(char **table)
@@ -12,8 +24,8 @@ void	free_table(char **table)
 
 void	free_data(t_data *data)
 {
-	if (data->PATH_table)
-		free_table(data->PATH_table);
+	if (data->path_table)
+		free_table(data->path_table);
 	if (data->cmds)
 		free_table(data->cmds);
 	if (data->current_command)
@@ -24,12 +36,6 @@ void	free_data(t_data *data)
 		free(data->fds);
 	if (data)
 		free(data);
-}
-
-int	cmd_failed(t_data *data)
-{
-	ft_printf_fd(2, "%s %s: command not found\n", data->current_command[0], data->current_command[1]);
-	return (127);//127 provoca doble print??
 }
 
 int	handle_error(t_data *data, char *msg, int terminate)

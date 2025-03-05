@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:33:20 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/05 11:25:44 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/05 22:52:39 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static void	cycling_processes(t_data *data, int ac, char **env)
 			handle_error(data, "Error:\nFork failed", 1);
 		if (!pid)
 			handle_procesess(data, env);
-		waitpid(-1, &data->status, 0);
 		reset_current_command(data);
 		data->n_cmd++;
 		close(data->fds->prev_pipe);
@@ -77,7 +76,9 @@ static void	last_process(t_data *data, char **env)
 	close(data->fds->prev_pipe);
 	close(data->fds->outfile);
 	close(data->fds->pipefd[0]);
-	waitpid(-1, &data->status, 0);
+	data->n_cmd++;
+	while (data->n_cmd--)
+		waitpid(-1, &data->status, 0);
 	free_data(data);
 }
 
@@ -87,6 +88,7 @@ int	main(int ac, char **av, char **env)
 
 	if (ac < 5)
 	{
+		errno = EINVAL; 
 		perror("Error:\nWrong number of arguments");
 		exit(errno);
 	}

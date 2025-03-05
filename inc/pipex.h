@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:30:59 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/05 15:32:06 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/06 00:01:46 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ void	find_program(t_data *data);
 int		handle_procesess(t_data *data, char **env);
 int		handle_last_process(t_data *data, char **env);
 void	complete_path(t_data *data);
+char	**ft_split_cmd(char const *s, char c);
 #endif

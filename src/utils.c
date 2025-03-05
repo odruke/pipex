@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:34:21 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/05 11:26:30 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/06 00:08:13 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	find_program(t_data *data)
 	int		i;
 
 	i = 0;
-	data->current_command = ft_split(data->cmds[data->n_cmd], ' ');
+	data->current_command = ft_split_cmd(data->cmds[data->n_cmd], ' ');
 	if (!data->current_command)
 		handle_error(data, "Error:\nsplit command failed", 1);
 	while (data->path_table[i])

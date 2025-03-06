@@ -6,13 +6,14 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:30:59 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/06 00:01:46 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/06 22:43:35 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 # include "ft_printf.h"
+# include "libft.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>

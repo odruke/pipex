@@ -1,8 +1,6 @@
 #variables
 
-NAME = libftprintf.a
-
-LIB = libft.a
+NAME = printf.a
 
 SRCDIR = ./src/
 
@@ -21,7 +19,8 @@ FILES = ft_flags\
 
 SRC = $(addprefix $(SRCDIR), $(addsuffix .c, $(FILES)))
 
-INC = $(addprefix $(INCDIR), ft_printf.h)
+#INC = $(addprefix $(INCDIR), ft_printf.h)
+INC = ft_printf.h
 
 OBJ = $(SRC:.c=.o)
 
@@ -34,22 +33,17 @@ all: $(NAME)
 
 bonus: $(all)
 
-$(NAME): $(LIB) $(OBJ)
-	mv  $(INCDIR)$(LIB) $(NAME)
+$(NAME): $(OBJ)
 	ar rcs $(NAME) $(OBJ)
-
-$(LIB):
-	make -C libft
 
 %.o: %.c
 	$(CC) -I$(INCDIR) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)
-	make clean -C libft
+
 fclean: clean
 	rm -f $(NAME)
-	make fclean -C libft
 
 re: fclean all
 

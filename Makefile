@@ -6,7 +6,11 @@ CC = cc
 
 FT_PRINTF_LIBDIR = ./ft_printf/
 
-FT_PRINTF_LIB = $(FT_PRINTF_LIBDIR)libftprintf.a 
+FT_PRINTF_LIB = $(FT_PRINTF_LIBDIR)printf.a
+
+LIBFTDIR = ./libft/
+
+LIBFT_LIB = $(LIBFTDIR)libft.a
 
 SRCDIR = ./src/
 
@@ -24,24 +28,27 @@ OBJ = $(SRC:.c=.o)
 
 INC = $(INCDIR)pipex.h
 
-all: aux_library $(NAME)
+all: aux_librarys $(NAME)
 
-$(NAME): $(OBJ) $(FT_PRINTF_LIB)
-	$(CC) $(OBJ) $(FT_PRINTF_LIB) -o $@
+$(NAME): $(OBJ)
+	$(CC) $(OBJ) $(FT_PRINTF_LIB) $(LIBFT_LIB) -o $@
 
 %.o: %.c
 	$(CC) -I$(INCDIR) $(CFLAGS) -c $< -o $@
 
-aux_library:
-	@make -C $(FT_PRINTF_LIBDIR) all
+aux_librarys:
+	make -C $(FT_PRINTF_LIBDIR) all
+	make -C $(LIBFTDIR) all
 
 clean:
 	rm -f $(OBJ)
-	@make -C $(FT_PRINTF_LIBDIR) clean
+	make -C $(FT_PRINTF_LIBDIR) clean
+	make -C $(LIBFTDIR) clean
 
 fclean: clean
 	rm -f $(NAME)
-	@make -C $(FT_PRINTF_LIBDIR) fclean
+	make -C $(FT_PRINTF_LIBDIR) fclean
+	make -C $(LIBFTDIR) fclean
 
 re: fclean all
 

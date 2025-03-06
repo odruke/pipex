@@ -4,7 +4,7 @@ NAME = libft.a
 
 SRCDIR = ./src/
 
-INCDIR = ../../inc/
+INCDIR = ../inc/
 
 FILES = ft_isalpha\
 		ft_isdigit\
@@ -44,7 +44,8 @@ FILES = ft_isalpha\
 
 SRC = $(addprefix $(SRCDIR), $(addsuffix .c, $(FILES)))
 
-INC = $(addprefix $(INCDIR), libft.h)
+#INC = $(addprefix $(INCDIR), libft.h)
+INC = libft.h
 
 OBJ = $(SRC:.c=.o)
 
@@ -57,7 +58,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rcs $(INCDIR)$(NAME) $(OBJ)
+	ar rcs $(NAME) $(OBJ)
 
 %.o: %.c
 	$(CC) -I$(INCDIR) $(CFLAGS) -c $< -o $@
@@ -66,7 +67,7 @@ clean:
 	rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(INCDIR)$(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 

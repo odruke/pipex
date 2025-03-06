@@ -6,7 +6,7 @@
 /*   By: odruke-s <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 23:46:01 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/06 00:07:23 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:18:00 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,6 @@ static int	is_quote(char c)
 		return (1);
 	else
 		return (0);
-}
-
-static char	*ft_strndup(const char *s, int n)
-{
-	char	*res;
-	int		i;
-
-	i = 0;
-	res = malloc(sizeof(char) * (n + 1));
-	if (res == NULL)
-		return (NULL);
-	while (i < n)
-	{
-		res[i] = s[i];
-		i++;
-	}
-	res[i] = '\0';
-	return (res);
 }
 
 static int	word_number(const char *str, char sep)

@@ -54,7 +54,7 @@ void	parsing(t_data *data, int ac, char **av, char **env)
 	data->path_table = ft_split(data->path, ':');
 	complete_path(data);
 }
-
+/*
 void	parse_current_command(t_data *data, char *cmd)
 {
 	int	i;
@@ -79,14 +79,14 @@ void	parse_current_command(t_data *data, char *cmd)
 		data->current_command[1] = NULL;
 
 }
-
+*/
 void	find_program(t_data *data)
 {
 	int		i;
 
 	i = 0;
-//	parse_current_command(data, data->cmds[data->n_cmd]);
-	data->current_command = ft_split(data->cmds[data->n_cmd], ' ');
+	data->current_command = parsing_current_cmd(data->cmds[data->n_cmd]);
+	//data->current_command = ft_split(data->cmds[data->n_cmd], ' ');
 	if (!data->current_command)
 		handle_error(data, "Error:\nsplit command failed", 1);
 	while (data->path_table[i])

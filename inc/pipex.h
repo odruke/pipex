@@ -20,6 +20,13 @@
 # include <errno.h>
 # include <sys/wait.h>
 
+typedef struct s_parsing {
+	int		len;
+	int		i;
+	int		j;
+	int		count;
+}	t_parsing;
+
 typedef struct s_fds
 {
 	int	pipefd[2];
@@ -51,4 +58,10 @@ int		handle_procesess(t_data *data, char **env);
 int		handle_last_process(t_data *data, char **env);
 void	complete_path(t_data *data);
 char	**ft_split_cmd(char const *s, char c);
+char	**parsing_current_cmd(const char *str);
+void	space_case(char *str, char **res, t_parsing *tab);
+void	double_quota(char *str, char **res, t_parsing *tab);
+void	single_quota(char *str, char **res, t_parsing *tab);
+int	ft_tab_len(char const *s, char c, int i);
+
 #endif

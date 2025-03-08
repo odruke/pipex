@@ -21,6 +21,8 @@ FILES  = main\
 		error_and_exit\
 		handle_procesess\
 		ft_split_cmd\
+		parsing_cmd\
+		parsing_cmd_utils\
 
 SRC = $(addprefix $(SRCDIR), $(addsuffix .c, $(FILES)))
 

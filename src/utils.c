@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:34:21 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/10 17:13:30 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/10 22:17:25 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	parsing(t_data *data, int ac, char **av, char **env)
 		i++;
 	}
 	if (!data->path)
-		handle_error(data, "Error:\nPATH not found in environment", 1);
+//		handle_error(data, "Error:\nPATH not found in environment", 1);
+		data->path = "/";
 	data->path_table = ft_split(data->path, ':');
 	complete_path(data);
 }
@@ -58,8 +59,10 @@ void	parsing(t_data *data, int ac, char **av, char **env)
 void	find_program(t_data *data)
 {
 	int		i;
+	char	*tmp;
 
 	i = 0;
+	tmp = NULL;
 	data->current_command = parsing_current_cmd(data->cmds[data->n_cmd]);
 	if (!data->current_command)
 		handle_error(data, "Error:\nsplit command failed", 1);
@@ -67,8 +70,19 @@ void	find_program(t_data *data)
 	{
 		data->command_path = ft_strjoin(data->path_table[i],
 				data->current_command[0]);
-		if (!access(data->command_path, X_OK))
-			break ;
+		tmp = ft_strchr(data->command_path, '/');
+		while (tmp)
+		{
+			if (!access(tmp, X_OK))
+			{
+				tmp = ft_strdup(tmp);
+				free(data->command_path);
+				data->command_path = ft_strdup(tmp);
+				free(tmp);
+				return ;
+			}
+			tmp++;
+		}
 		free(data->command_path);
 		data->command_path = NULL;
 		i++;

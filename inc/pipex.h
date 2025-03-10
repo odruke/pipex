@@ -49,7 +49,7 @@ typedef struct s_data
 	pid_t	pid;
 }	t_data;
 
-int		handle_error(t_data *data, char *msg, int terminate);
+int		handle_error(t_data *data, char *cmd, char *msg, int terminate);
 void	free_data(t_data *data);
 void	free_table(char **table);
 void	reset_current_command(t_data *data);

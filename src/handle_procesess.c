@@ -22,9 +22,9 @@ int	handle_procesess(t_data *data, char **env)
 	}
 	close(data->fds->pipefd[0]);
 	if (dup2(data->fds->prev_pipe, STDIN_FILENO) == -1)
-		handle_error(data, "Error:\ndup2 failed", 1);
+		handle_error(data, "", "Error:\ndup2 failed", 1);
 	if (dup2(data->fds->pipefd[1], STDOUT_FILENO) == -1)
-		handle_error(data, "Error:\ndup2 failed", 1);
+		handle_error(data, "", "Error:\ndup2 failed", 1);
 	close(data->fds->prev_pipe);
 	close(data->fds->pipefd[1]);
 	execve(data->command_path, data->current_command, env);
@@ -41,9 +41,9 @@ int	handle_last_process(t_data *data, char **env)
 		exit(errno);
 	}
 	if (dup2(data->fds->prev_pipe, STDIN_FILENO) == -1)
-		handle_error(data, "Error:\ndup2 failed", 1);
+		handle_error(data, "", "Error:\ndup2 failed", 1);
 	if (dup2(data->fds->outfile, STDOUT_FILENO) == -1)
-		handle_error(data, "Error:\ndup2 failed", 1);
+		handle_error(data, "","Error:\ndup2 failed", 1);
 	close(data->fds->prev_pipe);
 	close(data->fds->outfile);
 	execve(data->command_path, data->current_command, env);

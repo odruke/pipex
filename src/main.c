@@ -30,10 +30,10 @@ static void	init_fds(t_data *data, int ac, char **av)
 {
 	data->fds->infile = open(av[1], O_RDONLY);
 	if (data->fds->infile < 0)
-		handle_error(data, av[1], 0);
+		handle_error(data, av[1],"open", 0);
 	data->fds->outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (data->fds->outfile < 0)
-		handle_error(data, av[ac - 1], 1);
+		handle_error(data, av[ac - 1], "", 1);
 	data->fds->prev_pipe = data->fds->infile;
 }
 
@@ -48,11 +48,11 @@ static void	cycling_processes(t_data *data, int ac, char **env)
 		errno = 0;
 		data->status = 0;
 		if (pipe(data->fds->pipefd) == -1)
-			handle_error(data, "Error:\nPipe failed", 1);
+			handle_error(data, "", "Error:\nPipe failed", 1);
 		find_program(data);
 		pid = fork();
 		if (pid == -1)
-			handle_error(data, "Error:\nFork failed", 1);
+			handle_error(data, "", "Error:\nFork failed", 1);
 		if (!pid)
 			handle_procesess(data, env);
 		reset_current_command(data);
@@ -70,7 +70,7 @@ static void	last_process(t_data *data, char **env)
 	find_program(data);
 	data->pid = fork();
 	if (data->pid == -1)
-		handle_error(data, "Error:\n2nd fork failed", 1);
+		handle_error(data, "", "Error:\n2nd fork failed", 1);
 	if (data->pid == 0)
 		handle_last_process(data, env);
 	close(data->fds->prev_pipe);
@@ -86,7 +86,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
-	if (ac < 5)
+	if (ac != 5)
 	{
 		errno = EINVAL;
 		perror("Error:\nWrong number of arguments");

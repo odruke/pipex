@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:30:59 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/06 22:43:35 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:12:38 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 # include <errno.h>
 # include <sys/wait.h>
 
-typedef struct s_parsing {
-	int		len;
-	int		i;
-	int		j;
-	int		count;
+typedef struct s_parsing
+{
+	int		size;
+	int		str_index;
+	int		arg_index;
+	int		arg_char_indx;
 }	t_parsing;
 
 typedef struct s_fds
@@ -57,11 +58,10 @@ void	find_program(t_data *data);
 int		handle_procesess(t_data *data, char **env);
 int		handle_last_process(t_data *data, char **env);
 void	complete_path(t_data *data);
-char	**ft_split_cmd(char const *s, char c);
 char	**parsing_current_cmd(const char *str);
 void	space_case(char *str, char **res, t_parsing *tab);
-void	double_quota(char *str, char **res, t_parsing *tab);
-void	single_quota(char *str, char **res, t_parsing *tab);
-int	ft_tab_len(char const *s, char c, int i);
+void	double_quotes(char *str, char **res, t_parsing *tab);
+void	single_quotes(char *str, char **res, t_parsing *tab);
+int		cmd_arg_len(char const *s, char c, int i);
 
 #endif

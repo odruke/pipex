@@ -1,29 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_isblank.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/01 17:33:00 by odruke-s          #+#    #+#             */
-/*   Updated: 2024/10/01 17:41:34 by odruke-s         ###   ########.fr       */
+/*   Created: 2025/03/10 12:10:07 by odruke-s          #+#    #+#             */
+/*   Updated: 2025/03/10 12:11:29 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+int	ft_isblank(char c)
 {
-	size_t	i;
-
-	i = 0;
-	if (size <= 0)
-		return (ft_strlen(src));
-	while (src[i] && i < (size -1))
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (ft_strlen(src));
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	else
+		return (0);
 }

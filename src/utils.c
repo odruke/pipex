@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:34:21 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/06 20:45:48 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:13:30 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,39 +54,13 @@ void	parsing(t_data *data, int ac, char **av, char **env)
 	data->path_table = ft_split(data->path, ':');
 	complete_path(data);
 }
-/*
-void	parse_current_command(t_data *data, char *cmd)
-{
-	int	i;
-	int j;
 
-	i = 0;
-	j = 0;
-	data->current_command = (char **)malloc(sizeof(char) * 3);
-	if (!data->current_command)
-		handle_error(data, "error:\nmalloc failed", 1);
-	while (cmd[j] && cmd[j] == ' ')
-		j++;
-	while (cmd[i + j] && cmd[i + j] != ' ')
-		i++;
-	data->current_command[0] = ft_strndup(cmd + j, i);
-	if (cmd[j + i])
-	{
-		data->current_command[1] = ft_strdup(cmd + (j + i + 1));
-		data->current_command[2] = NULL;
-	}
-	else
-		data->current_command[1] = NULL;
-
-}
-*/
 void	find_program(t_data *data)
 {
 	int		i;
 
 	i = 0;
 	data->current_command = parsing_current_cmd(data->cmds[data->n_cmd]);
-	//data->current_command = ft_split(data->cmds[data->n_cmd], ' ');
 	if (!data->current_command)
 		handle_error(data, "Error:\nsplit command failed", 1);
 	while (data->path_table[i])
@@ -101,7 +75,6 @@ void	find_program(t_data *data)
 	}
 	if (!data->command_path)
 		handle_error(data, data->current_command[0], 0);
-
 }
 
 void	reset_current_command(t_data *data)

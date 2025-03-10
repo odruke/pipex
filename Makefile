@@ -20,7 +20,6 @@ FILES  = main\
 		utils\
 		error_and_exit\
 		handle_procesess\
-		ft_split_cmd\
 		parsing_cmd\
 		parsing_cmd_utils\
 

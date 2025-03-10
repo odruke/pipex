@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:33:20 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/05 22:52:39 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/10 12:09:39 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	main(int ac, char **av, char **env)
 
 	if (ac < 5)
 	{
-		errno = EINVAL; 
+		errno = EINVAL;
 		perror("Error:\nWrong number of arguments");
 		exit(errno);
 	}

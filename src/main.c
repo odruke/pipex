@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:33:20 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/10 12:09:39 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/11 19:58:56 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	init_fds(t_data *data, int ac, char **av)
 {
 	data->fds->infile = open(av[1], O_RDONLY);
 	if (data->fds->infile < 0)
-		handle_error(data, av[1],"open", 0);
+		handle_error(data, av[1], "open", 0);
 	data->fds->outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (data->fds->outfile < 0)
 		handle_error(data, av[ac - 1], "", 1);
@@ -45,21 +45,23 @@ static void	cycling_processes(t_data *data, int ac, char **env)
 	i = 2;
 	while ((ac - 2) > i)
 	{
-		errno = 0;
 		data->status = 0;
 		if (pipe(data->fds->pipefd) == -1)
 			handle_error(data, "", "Error:\nPipe failed", 1);
-		find_program(data);
-		pid = fork();
-		if (pid == -1)
-			handle_error(data, "", "Error:\nFork failed", 1);
-		if (!pid)
-			handle_procesess(data, env);
-		reset_current_command(data);
-		data->n_cmd++;
+		if (data->fds->prev_pipe > 0)
+		{
+			find_program(data);
+			pid = fork();
+			if (pid == -1)
+				handle_error(data, "", "Error:\nFork failed", 1);
+			if (!pid)
+				handle_procesess(data, env);
+			reset_current_command(data);
+		}
 		close(data->fds->prev_pipe);
 		close(data->fds->pipefd[1]);
 		data->fds->prev_pipe = data->fds->pipefd[0];
+		data->n_cmd++;
 		i++;
 	}
 }
@@ -75,22 +77,16 @@ static void	last_process(t_data *data, char **env)
 		handle_last_process(data, env);
 	close(data->fds->prev_pipe);
 	close(data->fds->outfile);
-	close(data->fds->pipefd[0]);
-	data->n_cmd++;
-	while (data->n_cmd--)
-		waitpid(-1, &data->status, 0);
-	free_data(data);
 }
 
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
-	if (ac != 5)
+	if (ac < 5)
 	{
-		errno = EINVAL;
-		perror("Error:\nWrong number of arguments");
-		exit(errno);
+		ft_printf_fd(2, "Error: Wrong number of arguments\n");
+		exit(EINVAL);
 	}
 	data = ft_calloc(1, sizeof(t_data));
 	init_data(data);
@@ -98,5 +94,5 @@ int	main(int ac, char **av, char **env)
 	parsing(data, ac, av, env);
 	cycling_processes(data, ac, env);
 	last_process(data, env);
-	return (errno);
+	return (wait_and_status(data));
 }

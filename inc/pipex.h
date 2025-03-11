@@ -54,7 +54,7 @@ void	free_data(t_data *data);
 void	free_table(char **table);
 void	reset_current_command(t_data *data);
 void	parsing(t_data *data, int ac, char **av, char **env);
-void	find_program(t_data *data);
+int		find_program(t_data *data);
 int		handle_procesess(t_data *data, char **env);
 int		handle_last_process(t_data *data, char **env);
 void	complete_path(t_data *data);
@@ -63,5 +63,7 @@ void	space_case(char *str, char **res, t_parsing *tab);
 void	double_quotes(char *str, char **res, t_parsing *tab);
 void	single_quotes(char *str, char **res, t_parsing *tab);
 int		cmd_arg_len(char const *s, char c, int i);
+int		cmd_if_absolute_path(t_data *data);
+int		wait_and_status(t_data *data);
 
 #endif

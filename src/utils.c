@@ -6,11 +6,36 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 10:34:21 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/10 22:17:25 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:21:00 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	wait_and_status(t_data *data)
+{
+	int	exit_code;
+	int	child_exit;
+
+	exit_code = 0;
+	data->n_cmd++;
+	while (data->n_cmd--)
+	{
+		if (waitpid(-1, &data->status, 0) > 0)
+		{
+			if (WIFEXITED(data->status))
+			{
+				child_exit = WEXITSTATUS(data->status);
+				if (child_exit != 0)
+					exit_code = child_exit;
+			}
+			else if (WIFSIGNALED(data->status))
+				exit_code = 127;
+		}
+	}
+	free_data(data);
+	return (exit_code);
+}
 
 void	complete_path(t_data *data)
 {
@@ -27,73 +52,14 @@ void	complete_path(t_data *data)
 	}
 }
 
-void	parsing(t_data *data, int ac, char **av, char **env)
+int	cmd_if_absolute_path(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	data->cmds = (char **)malloc(sizeof(char *) * (ac - 2));
-	while (i < (ac -3))
-	{
-		data->cmds[i] = ft_strdup(av[i + 2]);
-		i++;
-	}
-	data->cmds[i] = NULL;
-	i = 0;
-	while (env[i])
-	{
-		if (!ft_strncmp(env[i], "PATH=", 5))
-		{
-			data->path = env[i] + 5;
-			break ;
-		}
-		i++;
-	}
-	if (!data->path)
-//		handle_error(data, "Error:\nPATH not found in environment", 1);
-		data->path = "/";
-	data->path_table = ft_split(data->path, ':');
-//	complete_path(data);
-}
-
-void	find_program(t_data *data)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	tmp = NULL;
-	data->current_command = parsing_current_cmd(data->cmds[data->n_cmd]);
-	if (!data->current_command)
-		handle_error(data, "", "Error:\nsplit command failed", 1);
-	while (data->path_table[i])
-	{
-		data->command_path = ft_strjoin(data->path_table[i],
-				data->current_command[0]);
-		tmp = ft_strchr(data->command_path, '/');
-		while (*tmp)
-		{
-			if (!access(tmp, X_OK))
-			{
-				tmp = ft_strdup(tmp);
-				free(data->command_path);
-				data->command_path = ft_strdup(tmp);
-				free(tmp);
-				return ;
-			}
-			tmp++;
-		}
-		free(data->command_path);
-		tmp = ft_strjoin(data->path_table[i], "/");
-		data->command_path = ft_strjoin(tmp, data->current_command[0]);
-		if (!access(data->command_path, X_OK))
-			return ;
-		free(data->command_path);
-		data->command_path = NULL;
-		i++;
-	}
-	if (!data->command_path)
-		handle_error(data, data->current_command[0], "command not found", 0);
+	errno = 0;
+	data->command_path = ft_strdup(data->current_command[0]);
+	if (!access(data->command_path, X_OK))
+		return (0);
+	else
+		return (1);
 }
 
 void	reset_current_command(t_data *data)

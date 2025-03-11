@@ -20,6 +20,7 @@ FILES  = main\
 		utils\
 		error_and_exit\
 		handle_procesess\
+		parsing\
 		parsing_cmd\
 		parsing_cmd_utils\
 

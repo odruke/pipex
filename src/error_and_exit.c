@@ -6,7 +6,7 @@
 /*   By: odruke-s <odruke-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:09:21 by odruke-s          #+#    #+#             */
-/*   Updated: 2025/03/10 22:56:52 by odruke-s         ###   ########.fr       */
+/*   Updated: 2025/03/11 19:59:37 by odruke-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,28 @@ void	free_data(t_data *data)
 
 int	handle_error(t_data *data, char *cmd, char *msg, int terminate)
 {
+	int	exit_code;
+
+	exit_code = 1;
 	if (ft_strnstr(msg, "open", ft_strlen(msg)))
 		ft_printf_fd(2, "zsh: %s: %s\n", strerror(errno), cmd);
+	else if (ft_strnstr(msg, "directory", ft_strlen(msg)))
+	{
+		ft_printf_fd(2, "zsh: %s: %s\n", msg, cmd);
+		exit_code = 126;
+	}
+	else if (ft_strnstr(msg, "command", ft_strlen(msg)))
+	{
+		ft_printf_fd(2, "zsh: %s: %s\n", msg, cmd);
+		exit_code = 127;
+	}
 	else
 		ft_printf_fd(2, "zsh: %s: %s\n", msg, cmd);
 	if (terminate)
 	{
 		free_data(data);
-		exit(1);
+		exit(exit_code);
 	}
 	else
-		return (1);
+		return (exit_code);
 }

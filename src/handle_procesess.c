@@ -15,7 +15,9 @@
 int	handle_procesess(t_data *data, char **env)
 {
 	errno = 0;
-	if (!data->command_path)
+	if (!data->current_command[0])
+		handle_error(data, "", "permission denied", 1);
+	else if (!data->command_path)
 	{
 		free_data(data);
 		exit(127);
@@ -34,12 +36,14 @@ int	handle_procesess(t_data *data, char **env)
 	close(data->fds->pipefd[1]);
 	execve(data->command_path, data->current_command, env);
 	free_data(data);
-	exit(errno);
+	exit(1);
 }
 
 int	handle_last_process(t_data *data, char **env)
 {
 	errno = 0;
+	if (!data->current_command[0])
+		handle_error(data, "", "permission denied", 1);
 	if (!data->command_path)
 	{
 		free_data(data);
@@ -58,5 +62,5 @@ int	handle_last_process(t_data *data, char **env)
 	close(data->fds->outfile);
 	execve(data->command_path, data->current_command, env);
 	free_data(data);
-	exit(errno);
+	exit(127);
 }

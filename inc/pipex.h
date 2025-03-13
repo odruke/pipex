@@ -65,5 +65,6 @@ void	single_quotes(char *str, char **res, t_parsing *tab);
 int		cmd_arg_len(char const *s, char c, int i);
 int		cmd_if_absolute_path(t_data *data);
 int		wait_and_status(t_data *data);
+void	init_data(t_data *data);
 
 #endif

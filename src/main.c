@@ -12,29 +12,24 @@
 
 #include "pipex.h"
 
-static void	init_data(t_data *data)
-{
-	data->path = NULL;
-	data->path_table = NULL;
-	data->cmds = NULL;
-	data->current_command = NULL;
-	data->command_path = NULL;
-	data->n_cmd = 0;
-	data->status = 0;
-	data->pid = 0;
-	data->fds = ft_calloc(1, sizeof(t_fds));
-	data->fds->infile = STDIN_FILENO;
-}
-
-static void	init_fds(t_data *data, int ac, char **av)
+static void	init_infile(t_data *data, char **av)
 {
 	data->fds->infile = open(av[1], O_RDONLY);
 	if (data->fds->infile < 0)
-		handle_error(data, av[1], "open", 0);
+		handle_error(data, av[1], strerror(errno), 0);
+	data->fds->prev_pipe = data->fds->infile;
+}
+
+static void	init_outfile(t_data *data, int ac, char **av)
+{
+	wait(NULL);
 	data->fds->outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (data->fds->outfile < 0)
-		handle_error(data, av[ac - 1], "", 1);
-	data->fds->prev_pipe = data->fds->infile;
+	{
+		ft_printf_fd(2, "zsh: %s: %s\n", strerror(errno), av[ac - 1]);
+		free_data(data);
+		exit(1);
+	}
 }
 
 static void	cycling_processes(t_data *data, int ac, char **env)
@@ -83,16 +78,17 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
-	if (ac < 5)
+	if (ac != 5)
 	{
 		ft_printf_fd(2, "Error: Wrong number of arguments\n");
 		exit(EINVAL);
 	}
 	data = ft_calloc(1, sizeof(t_data));
 	init_data(data);
-	init_fds(data, ac, av);
+	init_infile(data, av);
 	parsing(data, ac, av, env);
 	cycling_processes(data, ac, env);
+	init_outfile(data, ac, av);
 	last_process(data, env);
 	return (wait_and_status(data));
 }

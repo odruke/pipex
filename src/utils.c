@@ -21,7 +21,7 @@ int	wait_and_status(t_data *data)
 	data->n_cmd++;
 	while (data->n_cmd--)
 	{
-		if (waitpid(-1, &data->status, 0) > 0)
+		if (waitpid(data->pid, &data->status, 0) > 0)
 		{
 			if (WIFEXITED(data->status))
 			{
@@ -69,4 +69,18 @@ void	reset_current_command(t_data *data)
 	data->current_command = NULL;
 	data->command_path = NULL;
 	data->status = 0;
+}
+
+void	init_data(t_data *data)
+{
+	data->path = NULL;
+	data->path_table = NULL;
+	data->cmds = NULL;
+	data->current_command = NULL;
+	data->command_path = NULL;
+	data->n_cmd = 0;
+	data->status = 0;
+	data->pid = 0;
+	data->fds = ft_calloc(1, sizeof(t_fds));
+	data->fds->infile = STDIN_FILENO;
 }

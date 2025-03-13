@@ -43,20 +43,12 @@ int	handle_error(t_data *data, char *cmd, char *msg, int terminate)
 	int	exit_code;
 
 	exit_code = 1;
-	if (ft_strnstr(msg, "open", ft_strlen(msg)))
-		ft_printf_fd(2, "zsh: %s: %s\n", strerror(errno), cmd);
-	else if (ft_strnstr(msg, "directory", ft_strlen(msg)))
-	{
-		ft_printf_fd(2, "zsh: %s: %s\n", msg, cmd);
+	ft_printf_fd(2, "zsh: %s: %s\n", msg, cmd);
+	if (ft_strnstr(msg, "directory", ft_strlen(msg)) || ft_strnstr(msg,
+			"permission", ft_strlen(msg)))
 		exit_code = 126;
-	}
 	else if (ft_strnstr(msg, "command", ft_strlen(msg)))
-	{
-		ft_printf_fd(2, "zsh: %s: %s\n", msg, cmd);
 		exit_code = 127;
-	}
-	else
-		ft_printf_fd(2, "zsh: %s: %s\n", msg, cmd);
 	if (terminate)
 	{
 		free_data(data);
